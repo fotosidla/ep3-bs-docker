@@ -20,8 +20,10 @@ RUN a2enmod rewrite
 
 COPY --from=composer /usr/bin/composer /usr/bin/composer
 
-COPY app /var/www/html
-RUN cd /var/www/html/ && composer install
+COPY app /var/www/html/
+RUN cd /var/www/html/
+RUN composer install --prefer-dist --no-scripts --no-dev --no-autoloader && rm -rf /root/.composer
+RUN composer dump-autoload --no-scripts --no-dev --optimize
 
 COPY install/app /var/www/html
 
